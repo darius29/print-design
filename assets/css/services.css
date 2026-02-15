@@ -1,0 +1,20 @@
+/* Services page specific styles */
+
+/* Shorter hero for services page */
+.hero {
+  min-height: 50vh;
+}
+
+/* Service detail grid */
+.service-detail {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.service-detail img {
+  width: 100%;
+  border-radius: 12px;
+}

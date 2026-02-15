@@ -1,0 +1,728 @@
+/*
+ * Global styles for SDG PRINT & Design
+ *
+ * This stylesheet contains base variables, resets, typography,
+ * layout utilities and shared components such as the header,
+ * navigation, hero section, service cards, call‑to‑action blocks
+ * and footer. It defines the dark, tech‑inspired colour palette
+ * and general responsiveness across all pages. Page specific
+ * customisations live in separate CSS files for better
+ * maintainability.
+ */
+
+/* Colour palette and variables */
+:root {
+  --primary-bg: #0f172a;
+  --secondary-bg: #15223b;
+  --primary-color: #2563eb;
+  --accent-color: #22c55e;
+  --light-bg: #f3f4f6;
+  --gray: #94a3b8;
+  --white: #ffffff;
+}
+
+/* Reset & base styles */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  font-family: "Inter", "Poppins", sans-serif;
+  background-color: var(--primary-bg);
+  color: var(--white);
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  color: var(--white);
+}
+
+a {
+  color: var(--primary-color);
+  text-decoration: none;
+}
+
+button,
+.btn {
+  /* font-family: inherit; */
+  cursor: pointer;
+  border: none;
+  outline: none;
+}
+
+/* Primary button */
+.btn {
+  display: inline-block;
+  padding: 12px 24px;
+  border-radius: 8px;
+  background-color: var(--accent-color);
+  color: var(--primary-bg);
+  font-weight: 600;
+  transition: background 0.3s ease;
+}
+
+.btn:hover {
+  background-color: #1ca84f;
+}
+
+/* Header & Navigation */
+header {
+  background-color: var(--primary-bg);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  width: 100%;
+}
+
+nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.logo {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: var(--white);
+}
+
+.nav-links {
+  display: flex;
+  gap: 2rem;
+  list-style: none;
+}
+
+.nav-links a {
+  color: var(--white);
+  font-weight: 500;
+  position: relative;
+  padding: 0.25rem 0;
+}
+
+.nav-links a::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -4px;
+  height: 2px;
+  width: 0;
+  background-color: var(--accent-color);
+  transition: width 0.3s ease;
+}
+
+.nav-links a:hover::after {
+  width: 100%;
+}
+
+.nav-toggle {
+  display: none;
+  font-size: 1.5rem;
+  color: var(--white);
+}
+
+/* Hero section */
+/* .hero {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.hero .overlay {
+  background-color: rgba(15, 23, 42, 0.75);
+  padding: 3rem;
+  border-radius: 12px;
+  max-width: 800px;
+  text-align: center;
+}
+
+.hero h1 {
+  font-size: 2.5rem;
+  margin-bottom: 1rem;
+  line-height: 1.2;
+}
+
+.hero p {
+  font-size: 1.2rem;
+  margin-bottom: 2rem;
+  color: var(--gray);
+} */
+
+/* Sections */
+section {
+  padding: 4rem 2rem;
+}
+
+.section-light {
+  background-color: var(--light-bg);
+  color: var(--primary-bg);
+}
+
+.section-light h1,
+.section-light h2,
+.section-light h3,
+.section-light h4 {
+  color: var(--primary-bg);
+}
+
+.section-light p {
+  color: #475569;
+}
+
+/* Services grid and cards (shared) */
+.services-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.service-card {
+  background-color: var(--primary-bg);
+  padding: 2rem;
+  border-radius: 12px;
+  text-align: center;
+  transition:
+    transform 0.3s ease,
+    box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.3);
+}
+
+.service-card i {
+  font-size: 2.5rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.service-card h3 {
+  margin-bottom: 0.75rem;
+  font-size: 1.25rem;
+  align-content: center;
+}
+
+.service-card p {
+  color: var(--gray);
+  font-size: 0.95rem;
+  margin-bottom: 1rem;
+}
+
+.service-card .btn-secondary {
+  background-color: var(--primary-color);
+  color: var(--white);
+}
+
+/* Comparison component (shared) */
+.comparison-section {
+  text-align: center;
+}
+
+.comparison-section h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+.comparison-container {
+  position: relative;
+  max-width: 900px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 12px;
+}
+
+.comparison-container img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.comparison-container .before-image-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 50%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.comparison-container .before-image-wrapper img {
+  width: 100%;
+  height: 92%;
+  object-fit: cover;
+}
+
+.comparison-container input[type="range"] {
+  width: 100%;
+  margin-top: 1rem;
+  cursor: ew-resize;
+  accent-color: var(--primary-color);
+}
+
+/* Call to Action (shared) */
+/* =========================
+   CTA MODERN (Premium)
+   ========================= */
+
+.cta-modern {
+  position: relative;
+  padding: 5.5rem 2rem;
+  overflow: hidden;
+  background: var(--primary-bg);
+}
+
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(
+      circle at 15% 25%,
+      rgba(34, 197, 94, 0.22),
+      transparent 55%
+    ),
+    radial-gradient(
+      circle at 85% 70%,
+      rgba(37, 99, 235, 0.28),
+      transparent 60%
+    ),
+    linear-gradient(180deg, rgba(15, 23, 42, 0), rgba(15, 23, 42, 1));
+  filter: saturate(1.05);
+  z-index: 0;
+}
+
+.cta-card {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1.1fr 0.9fr;
+  gap: 2rem;
+  align-items: center;
+
+  padding: 2.4rem;
+  border-radius: 20px;
+
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.45);
+  overflow: hidden;
+}
+
+.cta-kicker {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.55rem;
+  padding: 8px 12px;
+  border-radius: 999px;
+  font-weight: 900;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-size: 0.75rem;
+
+  color: rgba(255, 255, 255, 0.9);
+  background: rgba(34, 197, 94, 0.14);
+  border: 1px solid rgba(34, 197, 94, 0.28);
+  margin-bottom: 1rem;
+}
+
+.cta-left h2 {
+  font-size: 2.2rem;
+  line-height: 1.15;
+  margin-bottom: 0.8rem;
+}
+
+.cta-left p {
+  color: var(--gray);
+  max-width: 60ch;
+  margin-bottom: 1.3rem;
+}
+
+.cta-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+.cta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 10px 12px;
+  border-radius: 999px;
+  font-weight: 700;
+  font-size: 0.92rem;
+
+  color: rgba(255, 255, 255, 0.88);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cta-chip i {
+  color: var(--accent-color);
+}
+
+.cta-right {
+  display: grid;
+  gap: 1.2rem;
+  justify-items: end;
+}
+
+.cta-actions {
+  width: 100%;
+  display: grid;
+  gap: 0.8rem;
+}
+
+.cta-btn,
+.cta-btn-outline {
+  width: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 14px 18px;
+  border-radius: 14px;
+}
+
+.cta-btn i {
+  transition: transform 0.2s ease;
+}
+
+.cta-btn:hover i {
+  transform: translateX(3px);
+}
+
+.cta-btn-outline {
+  background: transparent;
+  border: 1px solid rgba(34, 197, 94, 0.55);
+  color: var(--accent-color);
+  font-weight: 800;
+}
+
+.cta-btn-outline:hover {
+  background: rgba(34, 197, 94, 0.1);
+}
+
+.cta-mini {
+  width: 100%;
+  display: grid;
+  gap: 0.55rem;
+  padding: 1rem;
+  border-radius: 16px;
+  background: rgba(15, 23, 42, 0.55);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.cta-mini-item {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+  color: rgba(255, 255, 255, 0.88);
+  font-weight: 700;
+  font-size: 0.95rem;
+}
+
+.cta-mini-item i {
+  color: var(--accent-color);
+}
+
+/* Shine animation */
+.cta-shine {
+  position: absolute;
+  inset: -40%;
+  background: linear-gradient(
+    120deg,
+    transparent 40%,
+    rgba(255, 255, 255, 0.12) 50%,
+    transparent 60%
+  );
+  transform: translateX(-40%) rotate(10deg);
+  animation: ctaShine 5.5s ease-in-out infinite;
+  pointer-events: none;
+}
+
+@keyframes ctaShine {
+  0% {
+    transform: translateX(-60%) rotate(10deg);
+    opacity: 0;
+  }
+  30% {
+    opacity: 0.8;
+  }
+  60% {
+    opacity: 0.15;
+  }
+  100% {
+    transform: translateX(60%) rotate(10deg);
+    opacity: 0;
+  }
+}
+
+/* Hover lift */
+.cta-card:hover {
+  transform: translateY(-4px);
+  transition: transform 0.25s ease;
+}
+
+/* Responsive */
+@media (max-width: 980px) {
+  .cta-card {
+    grid-template-columns: 1fr;
+    text-align: left;
+  }
+
+  .cta-right {
+    justify-items: stretch;
+  }
+
+  .cta-left h2 {
+    font-size: 2rem;
+  }
+}
+
+/* Footer */
+footer {
+  background-color: var(--primary-bg);
+  color: var(--gray);
+  padding: 3rem 2rem;
+}
+
+.footer-grid {
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+footer h4 {
+  color: var(--white);
+  margin-bottom: 1rem;
+}
+
+footer ul {
+  list-style: none;
+}
+
+footer a {
+  color: var(--gray);
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+footer a:hover {
+  color: var(--accent-color);
+}
+
+footer .social a {
+  font-size: 1.5rem;
+  margin-right: 0.75rem;
+  color: var(--gray);
+}
+
+footer .social a:hover {
+  color: var(--accent-color);
+}
+
+/* Layout utility */
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Responsive navigation */
+@media (max-width: 768px) {
+  .nav-links {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 70%;
+    height: 100%;
+    background-color: var(--primary-bg);
+    flex-direction: column;
+    justify-content: center;
+    gap: 2rem;
+    padding: 2rem;
+    transition: right 0.3s ease;
+  }
+  .nav-links.open {
+    right: 0;
+  }
+  .nav-toggle {
+    display: block;
+  }
+  .hero h1 {
+    font-size: 2rem;
+  }
+  .services-grid {
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  }
+}
+
+/* Side-by-side comparison sliders */
+/* Wrapper pentru cele 2 slidere (în locul vechiului .slider-container) */
+.comparison-sliders {
+  display: flex;
+  justify-content: center;
+  align-items: stretch;
+  gap: 5rem;
+  flex-wrap: wrap; /* ca să cadă frumos pe mobil */
+}
+
+/* Slider (adaptat din CodePen, cu clase schimbate) */
+.ba-slider {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  height: 400px;
+  border-radius: 0.7rem;
+  overflow: hidden;
+  background: #000; /* dacă imaginile nu încarcă */
+}
+
+/* Imagini full + perfect încadrate */
+.ba-before,
+.ba-after {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.ba-before img,
+.ba-after img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* IMPORTANT: încadrate perfect */
+  object-position: center;
+  display: block;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+/* Texte Before/After (ca în CodePen) */
+.ba-before-text,
+.ba-after-text {
+  position: absolute;
+  font-family: system-ui;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3a3a3a;
+  padding: 10px 20px;
+  background-color: #ffffff9e;
+  border-radius: 0.3rem;
+  letter-spacing: 2px;
+  z-index: 5;
+}
+
+.ba-before-text {
+  left: 20px;
+  top: 20px;
+}
+
+.ba-after-text {
+  right: 20px;
+  top: 20px;
+  z-index: 3;
+}
+
+/* Handle invizibil (zona de drag) */
+.ba-handle {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0px;
+  height: 100%;
+  cursor: ew-resize;
+  z-index: 6;
+}
+
+/* Linia + săgețile pe mijloc */
+.ba-line {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 0px;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 7;
+  user-select: none;
+  -webkit-user-select: none;
+  cursor: ew-resize;
+}
+
+.ba-line svg {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 9;
+}
+
+/* Pulse (ca în CodePen) */
+.ba-pulse {
+  position: relative;
+  width: 0;
+  height: 0;
+}
+
+.ba-pulse::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  background-color: #ffffff;
+  transform: translate(-50%, -50%) scale(1);
+  opacity: 0;
+  animation: baPulse 1.5s infinite;
+  z-index: 8;
+}
+
+@keyframes baPulse {
+  0% {
+    transform: translate(-50%, -50%) scale(1);
+    opacity: 0.6;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(1.8);
+    opacity: 0;
+  }
+}
+
+/* Default clipping (JS va seta exact) */
+.ba-after {
+  clip-path: inset(0 0 0 50%);
+}
+.ba-before {
+  clip-path: inset(0 50% 0 0);
+}

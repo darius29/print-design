@@ -1,0 +1,268 @@
+<!doctype html>
+<html lang="ro">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portofoliu – SDG PRINT &amp; Design</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"
+      integrity="sha512-XNiXHv+7xLZGHlSiZb4ZcgENStxP80G3LxksCEAs2urDqSXRSf5MiuNcbXk7uOAqCHwcJymh5LLX4eJIgWXK6Q=="
+      crossorigin="anonymous"
+      referrerpolicy="no-referrer"
+    />
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/global.css" />
+    <link rel="stylesheet" href="assets/css/portfolio.css" />
+  </head>
+  <body>
+    <!-- Header -->
+    <header>
+      <nav>
+        <div class="logo"><a href="index.html">SDG PRINT &amp; Design</a></div>
+        <ul class="nav-links">
+          <li><a href="index.html">Acasă</a></li>
+          <li><a href="about.html">Despre noi</a></li>
+          <li><a href="services.html">Servicii</a></li>
+          <li><a href="portfolio.html" class="active">Portofoliu</a></li>
+          <li><a href="faq.html">FAQ</a></li>
+          <li><a href="contact.html">Contact</a></li>
+        </ul>
+        <div class="nav-toggle"><i class="fa-solid fa-bars"></i></div>
+      </nav>
+    </header>
+    <!-- Hero -->
+    <section
+      class="hero"
+      style="
+        background-image: url(&quot;assets/img/after.png&quot;);
+        min-height: 50vh;
+        background-size: 100%;
+        background-repeat: no-repeat;
+      "
+    >
+      <div class="overlay">
+        <h1>Portofoliul nostru</h1>
+        <p>
+          Descoperă proiectele noastre recente și inspiră-te pentru următorul
+          tău proiect.
+        </p>
+      </div>
+    </section>
+    <!-- Filters -->
+    <section class="portfolio-gallery">
+      <div class="filters">
+        <button class="filter-button active" data-filter="all">Toate</button>
+        <button class="filter-button" data-filter="wall">Perete</button>
+        <button class="filter-button" data-filter="objects">Obiecte</button>
+        <button class="filter-button" data-filter="textile">Textile</button>
+        <button class="filter-button" data-filter="design">Design</button>
+      </div>
+      <div class="gallery-grid">
+        <!-- Portfolio Items -->
+        <div class="portfolio-item" data-category="wall design">
+          <img src="assets/img/portfolio1.png" alt="Mural graffiti" />
+          <div class="portfolio-info">
+            <h4>Mural Graffiti</h4>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="wall">
+          <img src="assets/img/portfolio2.png" alt="Model geometric" />
+          <div class="portfolio-info">
+            <h4>Model Geometric</h4>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="design objects">
+          <img src="assets/img/portfolio3.png" alt="Tipografie modernă" />
+          <div class="portfolio-info">
+            <h4>Tipografie Modernă</h4>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="wall textile">
+          <img src="assets/img/portfolio4.png" alt="Colaj mural" />
+          <div class="portfolio-info">
+            <h4>Colaj Mural</h4>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="wall objects">
+          <img src="assets/img/portfolio5.png" alt="Colaj variații" />
+          <div class="portfolio-info">
+            <h4>Variații de design</h4>
+          </div>
+        </div>
+        <!-- Duplicate some items to create varietate -->
+        <div class="portfolio-item" data-category="objects textile">
+          <img src="assets/img/portfolio3.png" alt="Tipografie modernă 2" />
+          <div class="portfolio-info">
+            <h4>Tipografie modernă</h4>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="wall">
+          <img src="assets/img/portfolio2.png" alt="Model geometric 2" />
+          <div class="portfolio-info">
+            <h4>Model geometric</h4>
+          </div>
+        </div>
+        <div class="portfolio-item" data-category="design">
+          <img src="assets/img/portfolio1.png" alt="Mural graffiti 2" />
+          <div class="portfolio-info">
+            <h4>Mural graffiti</h4>
+          </div>
+        </div>
+      </div>
+      <!-- Lightbox -->
+      <div class="lightbox">
+        <span class="close">&times;</span>
+        <img src="" alt="Imagine portofoliu" />
+        <div class="lightbox-caption"></div>
+      </div>
+    </section>
+    <!-- Before/After Section -->
+    <section class="comparison-section section-light">
+      <h2>Înainte &amp; După</h2>
+    <div class="comparison-sliders">
+        <!-- Slider 1 -->
+        <div class="ba-slider" data-start="50">
+          <div class="ba-before">
+            <img src="assets/img/before.png" alt="Înainte" />
+            <div class="ba-before-text">Before</div>
+          </div>
+
+          <div class="ba-after">
+            <img src="assets/img/after.png" alt="După" />
+            <div class="ba-after-text">After</div>
+          </div>
+
+          <div class="ba-handle" aria-hidden="true"></div>
+
+          <div class="ba-line" aria-label="Drag to compare">
+            <div class="ba-pulse"></div>
+            <svg
+              role="presentation"
+              focusable="false"
+              fill="none"
+              width="50"
+              height="50"
+              viewBox="0 0 50 50"
+            >
+              <g>
+                <rect width="50" height="50" rx="25" fill="#ffffff"></rect>
+                <path
+                  d="m19.25 19-6 6 6 6m11.5 0 6-6-6-6"
+                  stroke="#000000"
+                  stroke-width=".75"
+                  stroke-linecap="square"
+                ></path>
+              </g>
+            </svg>
+          </div>
+        </div>
+    </section>
+    <!-- Final CTA -->
+    <section class="cta-modern">
+  <div class="cta-bg" aria-hidden="true"></div>
+
+  <div class="container">
+    <div class="cta-card">
+      <div class="cta-left">
+        <div class="cta-kicker">
+          <i class="fa-solid fa-pen-ruler"></i>
+          Start rapid
+        </div>
+
+        <h2>Gata să îți transformi spațiul?</h2>
+        <p>
+          Trimite-ne o poză cu peretele / produsul și primești o ofertă
+          personalizată + consultanță gratuită, rapid.
+        </p>
+
+        <div class="cta-chips" aria-label="Beneficii">
+          <span class="cta-chip"><i class="fa-solid fa-bolt"></i> Răspuns rapid</span>
+          <span class="cta-chip"><i class="fa-solid fa-headset"></i> Consultanță</span>
+          <span class="cta-chip"><i class="fa-solid fa-shield"></i> Print durabil</span>
+        </div>
+      </div>
+
+      <div class="cta-right">
+        <div class="cta-actions">
+          <a href="contact.html" class="btn cta-btn">
+            Cere ofertă <i class="fa-solid fa-arrow-right"></i>
+          </a>
+          <a href="portfolio.html" class="btn-outline cta-btn-outline">
+            Vezi portofoliu
+          </a>
+        </div>
+
+        <div class="cta-mini">
+          <div class="cta-mini-item">
+            <i class="fa-solid fa-check"></i>
+            <span>Mockup & recomandări</span>
+          </div>
+          <div class="cta-mini-item">
+            <i class="fa-solid fa-check"></i>
+            <span>Estimare cost & timp</span>
+          </div>
+          <div class="cta-mini-item">
+            <i class="fa-solid fa-check"></i>
+            <span>Plan de execuție</span>
+          </div>
+        </div>
+      </div>
+
+      <span class="cta-shine" aria-hidden="true"></span>
+    </div>
+  </div>
+</section>
+
+    <!-- Footer -->
+    <footer>
+      <div class="footer-grid">
+        <div>
+          <h4>SDG PRINT &amp; Design</h4>
+          <p>Transformăm orice suprafață în experiență vizuală.</p>
+        </div>
+        <div>
+          <h4>Link-uri rapide</h4>
+          <ul>
+            <li><a href="about.html">Despre noi</a></li>
+            <li><a href="services.html">Servicii</a></li>
+            <li><a href="portfolio.html">Portofoliu</a></li>
+            <li><a href="faq.html">FAQ</a></li>
+            <li><a href="contact.html">Contact</a></li>
+          </ul>
+        </div>
+        <div>
+          <h4>Contact</h4>
+          <ul>
+            <li>Adresă: Timișoara, județ Timiș, România</li>
+            <li>Telefon: 0712 345 678</li>
+            <li>Email: contact@sdgprintdesign.ro</li>
+          </ul>
+        </div>
+        <div>
+          <h4>Urmărește-ne</h4>
+          <div class="social">
+            <a href="#" aria-label="Facebook"
+              ><i class="fa-brands fa-facebook-f"></i
+            ></a>
+            <a href="#" aria-label="Instagram"
+              ><i class="fa-brands fa-instagram"></i
+            ></a>
+            <a href="#" aria-label="LinkedIn"
+              ><i class="fa-brands fa-linkedin-in"></i
+            ></a>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <script src="script.js"></script>
+  </body>
+</html>

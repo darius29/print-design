@@ -1,0 +1,48 @@
+/* FAQ page specific styles */
+
+.faq-section {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.accordion-item {
+  background-color: var(--primary-bg);
+  margin-bottom: 1rem;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--primary-color);
+}
+
+.accordion-header {
+  padding: 1rem 1.5rem;
+  cursor: pointer;
+  position: relative;
+  font-weight: 600;
+}
+
+.accordion-header::after {
+  content: "\f078"; /* FontAwesome chevron-down */
+  font-family: "Font Awesome 6 Free";
+  font-weight: 900;
+  position: absolute;
+  right: 1.5rem;
+  top: 50%;
+  transform: translateY(-50%);
+  transition: transform 0.3s ease;
+}
+
+.accordion-item.open .accordion-header::after {
+  transform: translateY(-50%) rotate(180deg);
+}
+
+.accordion-content {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding: 0 1.5rem;
+}
+
+.accordion-item.open .accordion-content {
+  max-height: 300px;
+  padding: 1rem 1.5rem;
+}

@@ -1,0 +1,40 @@
+/* Contact page specific styles */
+
+.contact-section {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.form-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.form-container input,
+.form-container textarea {
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  border: 1px solid var(--primary-color);
+  background-color: var(--primary-bg);
+  color: var(--white);
+}
+
+.form-container textarea {
+  resize: vertical;
+  min-height: 120px;
+}
+
+.form-container button {
+  align-self: flex-start;
+}
+
+.map-container {
+  width: 100%;
+  min-height: 300px;
+  border-radius: 8px;
+  overflow: hidden;
+}
