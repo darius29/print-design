@@ -225,14 +225,8 @@ document.addEventListener("DOMContentLoaded", () => {
     portfolioItems.forEach((item) => {
       item.addEventListener("click", () => {
         const img = item.querySelector("img");
-        const infoTitle = item.querySelector(".portfolio-info h4");
         if (img) {
           lightboxImg.src = img.src;
-          if (infoTitle) {
-            caption.textContent = infoTitle.textContent;
-          } else {
-            caption.textContent = "";
-          }
           lightbox.classList.add("open");
         }
       });

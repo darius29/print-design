@@ -167,6 +167,12 @@
   background: rgba(255, 255, 255, 0.04);
 }
 
+.tech-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
 .tech-cards {
   display: grid;
   grid-template-columns: repeat(2, minmax(180px, 1fr));
@@ -650,4 +656,11 @@
   .why-pro-grid {
     grid-template-columns: 1fr;
   }
+}
+
+.tech-section-paragraph {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  margin-top: 1rem;
 }
