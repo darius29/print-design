@@ -714,7 +714,7 @@
 /* GRID CE PUTEM GRAVA */
 .laser-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
   gap: 1.2rem;
   margin-bottom: 3rem;
 }
@@ -743,15 +743,13 @@
 
 /* MATERIALE */
 .laser-materials {
-  text-align: center;
   margin-bottom: 3rem;
 }
 
 .materials-grid {
   margin-top: 1rem;
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
   gap: 0.8rem;
 }
 
