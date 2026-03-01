@@ -123,7 +123,7 @@
 }
 
 .service-detail-reverse {
-  background-color: var(--light-bg);
+  background-color: rgba(15, 23, 42, 0.55);
 }
 
 .service-detail img {
