@@ -1,394 +1,357 @@
-/*
- * SDG PRINT & Design JavaScript
- *
- * This script powers the interactive behaviour across the SDG PRINT & Design
- * website. It enables the mobile navigation toggle, testimonial slider,
- * before/after comparison control, portfolio filtering and lightbox,
- * FAQ accordion functionality and a basic contact form handler. All
- * interactions are kept intentionally lightweight to maintain a fa-solidt and
- * responsive user experience on both mobile and desktop devices. The
- * functions are only executed when the relevant elements exist on the page
- * to avoid errors on pages that don't include certain sections.
- */
-
 document.addEventListener("DOMContentLoaded", () => {
-  // Mobile navigation toggle
+  const body = document.body;
+  const header = document.querySelector("header");
   const navToggle = document.querySelector(".nav-toggle");
-  const navLinks = document.querySelector(".nav-links");
-  if (navToggle && navLinks) {
+  const navMenu = document.querySelector(".nav-links");
+  const navOverlay = document.querySelector(".nav-overlay");
+  const firstFocusableSelector =
+    'a[href], button:not([disabled]), textarea, input, select, [tabindex]:not([tabindex="-1"])';
+  let lastFocusedElement = null;
+
+  const focusTrap = (event) => {
+    if (!navMenu?.classList.contains("open") || event.key !== "Tab") return;
+    const focusable = Array.from(navMenu.querySelectorAll(firstFocusableSelector));
+    if (!focusable.length) return;
+
+    const firstEl = focusable[0];
+    const lastEl = focusable[focusable.length - 1];
+
+    if (event.shiftKey && document.activeElement === firstEl) {
+      event.preventDefault();
+      lastEl.focus();
+    } else if (!event.shiftKey && document.activeElement === lastEl) {
+      event.preventDefault();
+      firstEl.focus();
+    }
+  };
+
+  const closeMenu = () => {
+    if (!navMenu || !navToggle || !navOverlay) return;
+    navMenu.classList.remove("open");
+    navOverlay.classList.remove("open");
+    navToggle.setAttribute("aria-expanded", "false");
+    body.classList.remove("menu-open");
+    if (lastFocusedElement) lastFocusedElement.focus();
+  };
+
+  const openMenu = () => {
+    if (!navMenu || !navToggle || !navOverlay) return;
+    lastFocusedElement = document.activeElement;
+    navMenu.classList.add("open");
+    navOverlay.classList.add("open");
+    navToggle.setAttribute("aria-expanded", "true");
+    body.classList.add("menu-open");
+    const firstLink = navMenu.querySelector("a");
+    if (firstLink) firstLink.focus();
+  };
+
+  if (navToggle && navMenu && navOverlay) {
     navToggle.addEventListener("click", () => {
-      navLinks.classList.toggle("open");
+      if (navMenu.classList.contains("open")) closeMenu();
+      else openMenu();
+    });
+
+    navOverlay.addEventListener("click", closeMenu);
+
+    navMenu.querySelectorAll("a").forEach((link) => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (event.key === "Escape" && navMenu.classList.contains("open")) closeMenu();
+      focusTrap(event);
     });
   }
 
-  // Before/after comparison slider
-  // Before/after comparison slider (CodePen style - no range bar)
-  const baSliders = document.querySelectorAll(".ba-slider");
-
-  const initBASlider = (slider) => {
-    const handle = slider.querySelector(".ba-handle");
-    const line = slider.querySelector(".ba-line");
-    const before = slider.querySelector(".ba-before");
-    const after = slider.querySelector(".ba-after");
-
-    if (!handle || !line || !before || !after) return;
-
-    let isDragging = false;
-
-    const setToPercentage = (percentage, withTransition = false) => {
-      const p = Math.max(0, Math.min(100, percentage));
-
-      if (withTransition) {
-        handle.style.transition = "left 0.3s ease";
-        line.style.transition = "left 0.3s ease";
-      } else {
-        handle.style.transition = "none";
-        line.style.transition = "none";
-      }
-
-      handle.style.left = `${p}%`;
-      line.style.left = `${p}%`;
-
-      // clip-path: before shows left part, after shows right part
-      before.style.clipPath = `inset(0 ${100 - p}% 0 0)`;
-      after.style.clipPath = `inset(0 0 0 ${p}%)`;
-    };
-
-    const move = (clientX) => {
-      const rect = slider.getBoundingClientRect();
-      let x = clientX - rect.left;
-      x = Math.max(0, Math.min(rect.width, x));
-      const percentage = Math.round((x / rect.width) * 100);
-      setToPercentage(percentage, false);
-    };
-
-    const startDragging = () => {
-      isDragging = true;
-      handle.style.transition = "none";
-      line.style.transition = "none";
-    };
-
-    const stopDragging = () => {
-      isDragging = false;
-      handle.style.transition = "left 0.3s ease";
-      line.style.transition = "left 0.3s ease";
-    };
-
-    // Start position (default 50)
-    const start = Number(slider.getAttribute("data-start")) || 50;
-    // init after images load/layout
-    window.addEventListener("load", () => setToPercentage(start, true));
-
-    // mouse
-    handle.addEventListener("mousedown", startDragging);
-    line.addEventListener("mousedown", startDragging);
-
-    window.addEventListener("mousemove", (e) => {
-      if (isDragging) move(e.clientX);
-    });
-    window.addEventListener("mouseup", stopDragging);
-
-    // touch
-    handle.addEventListener("touchstart", startDragging, { passive: true });
-    line.addEventListener("touchstart", startDragging, { passive: true });
-
-    window.addEventListener(
-      "touchmove",
-      (e) => {
-        if (isDragging) move(e.touches[0].clientX);
-      },
-      { passive: true },
-    );
-
-    window.addEventListener("touchend", stopDragging);
-
-    // Optional: click to jump
-    slider.addEventListener("click", (e) => {
-      // nu sari când e drag
-      if (isDragging) return;
-      move(e.clientX);
-    });
+  const setHeaderState = () => {
+    if (!header) return;
+    header.classList.toggle("is-scrolled", window.scrollY > 12);
   };
+  window.addEventListener("scroll", setHeaderState, { passive: true });
+  setHeaderState();
 
-  baSliders.forEach(initBASlider);
+  // Accessible tabs / filters
+  const setupTablist = (containerSelector, buttonSelector, panelSelector) => {
+    const tablist = document.querySelector(containerSelector);
+    if (!tablist) return;
+    const tabs = Array.from(tablist.querySelectorAll(buttonSelector));
+    const panels = panelSelector ? Array.from(document.querySelectorAll(panelSelector)) : [];
 
-  // Services filter (interactive chips)
-  const chips = document.querySelectorAll(".services-filter .chip");
-  const serviceCards = document.querySelectorAll(".service-card-modern");
-
-  if (chips.length && serviceCards.length) {
-    chips.forEach((chip) => {
-      chip.addEventListener("click", () => {
-        chips.forEach((c) => c.classList.remove("active"));
-        chip.classList.add("active");
-
-        const filter = chip.getAttribute("data-filter");
-        serviceCards.forEach((card) => {
-          const category = card.getAttribute("data-category");
-          const shouldShow = filter === "all" || category === filter;
-          card.classList.toggle("is-hidden", !shouldShow);
-        });
+    const activateTab = (tab) => {
+      tabs.forEach((t) => {
+        const isActive = t === tab;
+        t.classList.toggle("active", isActive);
+        t.setAttribute("aria-selected", String(isActive));
+        t.setAttribute("tabindex", isActive ? "0" : "-1");
       });
-    });
-  }
 
-  // Products spotlight (interactive preview)
-  const spotItems = document.querySelectorAll(".spot-item");
-  const previewTitle = document.getElementById("previewTitle");
-  const previewDesc = document.getElementById("previewDesc");
-  const previewTag = document.getElementById("previewTag");
-  const previewLink = document.getElementById("previewLink");
-  const previewIconWrap = document.getElementById("previewIcon");
-
-  const setPreviewFromItem = (item) => {
-    if (
-      !item ||
-      !previewTitle ||
-      !previewDesc ||
-      !previewTag ||
-      !previewLink ||
-      !previewIconWrap
-    )
-      return;
-
-    const title = item.getAttribute("data-title") || "";
-    const desc = item.getAttribute("data-desc") || "";
-    const tag = item.getAttribute("data-tag") || "";
-    const icon = item.getAttribute("data-icon") || "fa-star";
-    const link = item.getAttribute("data-link") || "#";
-
-    // Active state
-    spotItems.forEach((i) => i.classList.remove("is-active"));
-    item.classList.add("is-active");
-
-    // Animate text update
-    [previewTitle, previewDesc, previewTag, previewIconWrap].forEach((el) => {
-      el.classList.remove("preview-fade");
-      // force reflow
-      void el.offsetWidth;
-      el.classList.add("preview-fade");
-    });
-
-    previewTitle.textContent = title;
-    previewDesc.textContent = desc;
-    previewTag.textContent = tag;
-    previewLink.setAttribute("href", link);
-
-    // swap icon
-    previewIconWrap.innerHTML = `<i class="fa-solid ${icon}"></i>`;
-  };
-
-  // Hover + click
-  if (spotItems.length) {
-    spotItems.forEach((item) => {
-      item.addEventListener("mouseenter", () => setPreviewFromItem(item));
-      item.addEventListener("click", () => setPreviewFromItem(item));
-    });
-
-    // init from first active
-    const initial =
-      document.querySelector(".spot-item.is-active") || spotItems[0];
-    setPreviewFromItem(initial);
-  }
-
-  // Portfolio filter
-  const filterButtons = document.querySelectorAll(".filter-button");
-  const portfolioItems = document.querySelectorAll(".portfolio-item");
-  if (filterButtons.length > 0 && portfolioItems.length > 0) {
-    filterButtons.forEach((button) => {
-      button.addEventListener("click", () => {
-        // remove active class from currently active button
-        const activeBtn = document.querySelector(".filter-button.active");
-        if (activeBtn) activeBtn.classList.remove("active");
-        button.classList.add("active");
-        const filter = button.getAttribute("data-filter");
-        portfolioItems.forEach((item) => {
-          const categories = (item.getAttribute("data-category") || "").split(
-            " ",
-          );
-          if (filter === "all" || categories.includes(filter)) {
-            item.style.display = "block";
-          } else {
-            item.style.display = "none";
-          }
-        });
+      const filter = tab.dataset.filter;
+      panels.forEach((panel) => {
+        const categories = (panel.dataset.category || "").split(" ");
+        const visible = filter === "all" || categories.includes(filter);
+        panel.classList.toggle("is-hidden", !visible);
       });
-    });
-  }
+    };
 
-  // Portfolio lightbox
-  const lightbox = document.querySelector(".lightbox");
-  if (lightbox && portfolioItems.length > 0) {
-    const lightboxImg = lightbox.querySelector("img");
-    const caption = lightbox.querySelector(".lightbox-caption");
-    const closeBtn = lightbox.querySelector(".close");
-    portfolioItems.forEach((item) => {
-      item.addEventListener("click", () => {
-        const img = item.querySelector("img");
-        if (img) {
-          lightboxImg.src = img.src;
-          lightbox.classList.add("open");
+    tabs.forEach((tab, index) => {
+      tab.id ||= `${containerSelector.replace(/[^a-z0-9]/gi, "")}-tab-${index}`;
+      tab.setAttribute("role", "tab");
+      tab.setAttribute("aria-selected", tab.classList.contains("active") ? "true" : "false");
+      tab.setAttribute("tabindex", tab.classList.contains("active") ? "0" : "-1");
+
+      tab.addEventListener("click", () => activateTab(tab));
+      tab.addEventListener("keydown", (event) => {
+        const currentIndex = tabs.indexOf(tab);
+        let nextIndex = null;
+        if (event.key === "ArrowRight") nextIndex = (currentIndex + 1) % tabs.length;
+        if (event.key === "ArrowLeft") nextIndex = (currentIndex - 1 + tabs.length) % tabs.length;
+        if (nextIndex !== null) {
+          event.preventDefault();
+          tabs[nextIndex].focus();
+          activateTab(tabs[nextIndex]);
         }
       });
     });
-    if (closeBtn) {
-      closeBtn.addEventListener("click", () => {
-        lightbox.classList.remove("open");
+  };
+
+  setupTablist(".services-filter", ".chip", ".service-card-modern");
+  setupTablist(".filters", ".filter-button", ".portfolio-item");
+
+  // Before / after sliders
+  const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  document.querySelectorAll(".ba-slider").forEach((slider, sliderIndex) => {
+    const before = slider.querySelector(".ba-before");
+    const after = slider.querySelector(".ba-after");
+    const handle = slider.querySelector(".ba-handle");
+    const line = slider.querySelector(".ba-line");
+    if (!before || !after || !handle || !line) return;
+
+    let dragging = false;
+    let percentage = Number(slider.dataset.start) || 50;
+
+    slider.setAttribute("role", "slider");
+    slider.setAttribute("aria-label", "Comparație înainte și după");
+    slider.setAttribute("aria-valuemin", "0");
+    slider.setAttribute("aria-valuemax", "100");
+    slider.setAttribute("tabindex", "0");
+    slider.setAttribute("aria-valuenow", String(Math.round(percentage)));
+    slider.setAttribute("aria-valuetext", `${Math.round(percentage)}% după`);
+    slider.dataset.sliderIndex = String(sliderIndex + 1);
+
+    const setPosition = (next, animate = false) => {
+      percentage = Math.max(0, Math.min(100, next));
+      const transition = !reduceMotion && animate ? "left 180ms ease" : "none";
+      handle.style.transition = transition;
+      line.style.transition = transition;
+      handle.style.left = `${percentage}%`;
+      line.style.left = `${percentage}%`;
+      before.style.clipPath = `inset(0 ${100 - percentage}% 0 0)`;
+      after.style.clipPath = `inset(0 0 0 ${percentage}%)`;
+      slider.setAttribute("aria-valuenow", String(Math.round(percentage)));
+      slider.setAttribute("aria-valuetext", `${Math.round(percentage)}% după`);
+    };
+
+    const moveFromClientX = (clientX) => {
+      const rect = slider.getBoundingClientRect();
+      const next = ((clientX - rect.left) / rect.width) * 100;
+      setPosition(next);
+    };
+
+    const startDrag = () => {
+      dragging = true;
+      slider.classList.add("is-dragging");
+    };
+    const stopDrag = () => {
+      dragging = false;
+      slider.classList.remove("is-dragging");
+    };
+
+    [handle, line].forEach((el) => {
+      el.addEventListener("mousedown", startDrag);
+      el.addEventListener("touchstart", startDrag, { passive: true });
+    });
+
+    window.addEventListener("mousemove", (event) => dragging && moveFromClientX(event.clientX));
+    window.addEventListener(
+      "touchmove",
+      (event) => dragging && moveFromClientX(event.touches[0].clientX),
+      { passive: true },
+    );
+    window.addEventListener("mouseup", stopDrag);
+    window.addEventListener("touchend", stopDrag);
+
+    slider.addEventListener("click", (event) => {
+      if (!dragging) moveFromClientX(event.clientX);
+    });
+
+    slider.addEventListener("keydown", (event) => {
+      if (event.key === "ArrowLeft") setPosition(percentage - 5, true);
+      if (event.key === "ArrowRight") setPosition(percentage + 5, true);
+    });
+
+    setPosition(percentage, true);
+  });
+
+  // Portfolio modal with keyboard navigation
+  const portfolioItems = Array.from(document.querySelectorAll(".portfolio-item"));
+  const lightbox = document.querySelector(".lightbox");
+  if (lightbox && portfolioItems.length) {
+    const image = lightbox.querySelector("img");
+    const caption = lightbox.querySelector(".lightbox-caption");
+    const closeBtn = lightbox.querySelector(".close");
+    let activeIndex = 0;
+
+    const updateModal = (index) => {
+      const item = portfolioItems[index];
+      const img = item?.querySelector("img");
+      if (!img || !image || !caption) return;
+      activeIndex = index;
+      image.src = img.src;
+      image.alt = img.alt;
+      const title = item.dataset.title || item.querySelector("h4")?.textContent || "Proiect";
+      const category = item.dataset.categoryLabel || item.dataset.category || "Categorie";
+      const description =
+        item.dataset.description || "Proiect realizat cu focus pe calitate, detalii și impact vizual.";
+      caption.innerHTML = `<strong>${title}</strong><span>${category}</span><p>${description}</p>`;
+    };
+
+    const openModal = (index) => {
+      lightbox.classList.add("open");
+      lightbox.setAttribute("aria-hidden", "false");
+      updateModal(index);
+      closeBtn?.focus();
+      body.classList.add("menu-open");
+    };
+
+    const closeModal = () => {
+      lightbox.classList.remove("open");
+      lightbox.setAttribute("aria-hidden", "true");
+      body.classList.remove("menu-open");
+    };
+
+    const goTo = (step) => {
+      const next = (activeIndex + step + portfolioItems.length) % portfolioItems.length;
+      updateModal(next);
+    };
+
+    portfolioItems.forEach((item, index) => {
+      item.setAttribute("tabindex", "0");
+      item.setAttribute("role", "button");
+      item.setAttribute("aria-label", `Deschide detalii pentru ${item.querySelector("h4")?.textContent || "proiect"}`);
+      item.addEventListener("click", () => openModal(index));
+      item.addEventListener("keydown", (event) => {
+        if (event.key === "Enter" || event.key === " ") {
+          event.preventDefault();
+          openModal(index);
+        }
       });
-    }
-    lightbox.addEventListener("click", (e) => {
-      // close when clicking outside the image
-      if (e.target === lightbox) {
-        lightbox.classList.remove("open");
-      }
+    });
+
+    closeBtn?.addEventListener("click", closeModal);
+    lightbox.addEventListener("click", (event) => {
+      if (event.target === lightbox) closeModal();
+    });
+
+    document.addEventListener("keydown", (event) => {
+      if (!lightbox.classList.contains("open")) return;
+      if (event.key === "Escape") closeModal();
+      if (event.key === "ArrowRight") goTo(1);
+      if (event.key === "ArrowLeft") goTo(-1);
     });
   }
 
   // FAQ accordion
-  const accordionItems = document.querySelectorAll(".accordion-item");
-  accordionItems.forEach((item) => {
+  document.querySelectorAll(".accordion-item").forEach((item) => {
     const header = item.querySelector(".accordion-header");
-    if (header) {
-      header.addEventListener("click", () => {
-        // Close any other open item
-        const currentlyOpen = document.querySelector(".accordion-item.open");
-        if (currentlyOpen && currentlyOpen !== item) {
-          currentlyOpen.classList.remove("open");
+    if (!header) return;
+    header.setAttribute("tabindex", "0");
+    header.setAttribute("role", "button");
+    header.setAttribute("aria-expanded", item.classList.contains("open") ? "true" : "false");
+
+    const toggle = () => {
+      const isOpen = item.classList.contains("open");
+      document.querySelectorAll(".accordion-item.open").forEach((openItem) => {
+        if (openItem !== item) {
+          openItem.classList.remove("open");
+          openItem.querySelector(".accordion-header")?.setAttribute("aria-expanded", "false");
         }
-        item.classList.toggle("open");
       });
-    }
-  });
+      item.classList.toggle("open", !isOpen);
+      header.setAttribute("aria-expanded", String(!isOpen));
+    };
 
-  // Contact form submission (simple alert)
-  const contactForm = document.querySelector(".contact-section form");
-  if (contactForm) {
-    contactForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      alert("Mulțumim pentru mesaj! Vă vom contacta în curând.");
-      contactForm.reset();
-    });
-  }
-});
-
-document.addEventListener("DOMContentLoaded", () => {
-  /* ====== TIMELINE SCROLL ANIMATION ====== */
-  const timeline = document.querySelector(".timeline-line");
-  const blocks = document.querySelectorAll(".timeline-block");
-
-  const revealTimeline = () => {
-    const trigger = window.innerHeight * 0.8;
-
-    blocks.forEach((block) => {
-      const top = block.getBoundingClientRect().top;
-      if (top < trigger) {
-        block.classList.add("visible");
+    header.addEventListener("click", toggle);
+    header.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
+        event.preventDefault();
+        toggle();
       }
     });
-
-    const timelineHeight =
-      document.querySelector(".timeline-wrapper").offsetHeight;
-    if (window.scrollY > 300) {
-      timeline.style.height = timelineHeight + "px";
-    }
-  };
-
-  window.addEventListener("scroll", revealTimeline);
-
-  /* ====== IMPACT COUNTER ANIMATION ====== */
-  const counters = document.querySelectorAll(".impact-card h3");
-
-  counters.forEach((counter) => {
-    const updateCount = () => {
-      const target = parseInt(counter.innerText.replace(/\D/g, ""));
-      if (!target) return;
-
-      let count = 0;
-      const step = target / 100;
-
-      const interval = setInterval(() => {
-        count += step;
-        if (count >= target) {
-          counter.innerText = target + "+";
-          clearInterval(interval);
-        } else {
-          counter.innerText = Math.floor(count) + "+";
-        }
-      }, 20);
-    };
-
-    updateCount();
   });
-});
 
-// Reveal on scroll (pentru .reveal)
-const reveals = document.querySelectorAll(".reveal");
-if (reveals.length) {
-  const io = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) e.target.classList.add("is-visible");
+  // Contact form validation + success/loading state
+  const contactForm = document.querySelector(".contact-section form");
+  if (contactForm) {
+    const status = contactForm.querySelector(".form-status");
+    const submitButton = contactForm.querySelector('button[type="submit"]');
+    const emailInput = contactForm.querySelector('input[type="email"]');
+
+    const showMessage = (message, type) => {
+      if (!status) return;
+      status.textContent = message;
+      status.className = `form-status ${type}`;
+      status.setAttribute("role", "status");
+    };
+
+    contactForm.addEventListener("submit", (event) => {
+      event.preventDefault();
+      const data = new FormData(contactForm);
+      const requiredFields = ["nume", "email", "telefon", "serviciu", "mesaj"];
+      let hasError = false;
+
+      requiredFields.forEach((name) => {
+        const field = contactForm.querySelector(`[name="${name}"]`);
+        if (!field) return;
+        const value = String(data.get(name) || "").trim();
+        const valid = value.length > 0;
+        field.setAttribute("aria-invalid", String(!valid));
+        field.classList.toggle("field-error", !valid);
+        if (!valid) hasError = true;
       });
-    },
-    { threshold: 0.18 },
-  );
 
-  reveals.forEach((el) => io.observe(el));
-}
+      const emailValue = String(data.get("email") || "").trim();
+      const emailValid = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue);
+      if (emailInput && !emailValid) {
+        emailInput.setAttribute("aria-invalid", "true");
+        emailInput.classList.add("field-error");
+        hasError = true;
+      }
 
-// Animate process connector line when section enters
-const processLine = document.querySelector(".process-line");
-const processWrap = document.querySelector(".process-pro");
+      if (hasError) {
+        showMessage("Te rugăm completează corect toate câmpurile obligatorii.", "error");
+        return;
+      }
 
-if (processLine && processWrap) {
-  const ioLine = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((e) => {
-        if (e.isIntersecting) processLine.classList.add("is-animated");
-      });
-    },
-    { threshold: 0.25 },
-  );
+      if (submitButton) {
+        submitButton.disabled = true;
+        submitButton.dataset.originalLabel = submitButton.textContent;
+        submitButton.innerHTML = '<span class="spinner" aria-hidden="true"></span> Se trimite...';
+      }
 
-  ioLine.observe(processWrap);
-}
+      setTimeout(() => {
+        contactForm.reset();
+        showMessage("Mulțumim! Mesajul a fost trimis cu succes. Revenim cât mai curând.", "success");
+        if (submitButton) {
+          submitButton.disabled = false;
+          submitButton.innerHTML = submitButton.dataset.originalLabel || "Trimite";
+        }
+      }, 1000);
+    });
+  }
 
-// Premium tilt hover (subtle 3D) for any [data-tilt-group]
-const tiltGroups = document.querySelectorAll("[data-tilt-group]");
-tiltGroups.forEach((group) => {
-  const cards = group.querySelectorAll(
-    ".step-pro, .why-pro-card, .floating-card",
-  );
-
-  cards.forEach((card) => {
-    let rect = null;
-
-    const onMove = (e) => {
-      rect = rect || card.getBoundingClientRect();
-      const x = (e.clientX - rect.left) / rect.width; // 0..1
-      const y = (e.clientY - rect.top) / rect.height; // 0..1
-
-      const rotateY = (x - 0.5) * 8; // -4..4
-      const rotateX = (0.5 - y) * 8; // -4..4
-
-      card.style.transform = `translateY(-10px) rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-    };
-
-    const onEnter = () => {
-      rect = card.getBoundingClientRect();
-      card.style.transition = "transform 120ms ease";
-      // after initial tick allow smooth
-      setTimeout(() => (card.style.transition = "transform 80ms linear"), 120);
-    };
-
-    const onLeave = () => {
-      card.style.transition = "transform 220ms ease";
-      card.style.transform = "";
-      rect = null;
-    };
-
-    card.addEventListener("mouseenter", onEnter);
-    card.addEventListener("mousemove", onMove);
-    card.addEventListener("mouseleave", onLeave);
+  // Lazy loading improvements
+  document.querySelectorAll("img").forEach((img) => {
+    if (!img.hasAttribute("loading")) img.loading = "lazy";
+    if (!img.hasAttribute("decoding")) img.decoding = "async";
   });
 });
