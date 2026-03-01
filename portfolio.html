@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&family=Inter:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Sora:wght@500;600;700;800&display=swap"
       rel="stylesheet"
     />
     <!-- Font Awesome -->
@@ -21,11 +21,12 @@
     <link rel="stylesheet" href="assets/css/portfolio.css" />
   </head>
   <body>
+    <a class="skip-link" href="#main-content">Sari la conținut</a>
     <!-- Header -->
-    <header>
+    <header class="site-header">
       <nav>
         <div class="logo"><a href="index.html">SDG PRINT &amp; Design</a></div>
-        <ul class="nav-links">
+        <ul class="nav-links" id="nav-menu">
           <li><a href="index.html">Acasă</a></li>
           <li><a href="about.html">Despre noi</a></li>
           <li><a href="services.html">Servicii</a></li>
@@ -33,9 +34,11 @@
           <li><a href="faq.html">FAQ</a></li>
           <li><a href="contact.html">Contact</a></li>
         </ul>
-        <div class="nav-toggle"><i class="fa-solid fa-bars"></i></div>
+        <button class="nav-toggle" aria-expanded="false" aria-controls="nav-menu" aria-label="Deschide meniul de navigare"><i class="fa-solid fa-bars" aria-hidden="true"></i></button>
       </nav>
     </header>
+    <div class="nav-overlay" aria-hidden="true"></div>
+    <main id="main-content">
     <!-- Hero -->
     <section
       class="hero"
@@ -57,69 +60,69 @@
     </section>
     <!-- Filters -->
     <section class="portfolio-gallery">
-      <div class="filters">
-        <button class="filter-button active" data-filter="all">Toate</button>
-        <button class="filter-button" data-filter="wall">Perete</button>
-        <button class="filter-button" data-filter="objects">Obiecte</button>
-        <button class="filter-button" data-filter="textile">Textile</button>
-        <button class="filter-button" data-filter="design">Design</button>
+      <div class="filters" role="tablist" aria-label="Filtru portofoliu">
+        <button class="filter-button active" data-filter="all" role="tab">Toate</button>
+        <button class="filter-button" data-filter="wall" role="tab">Perete</button>
+        <button class="filter-button" data-filter="objects" role="tab">Obiecte</button>
+        <button class="filter-button" data-filter="textile" role="tab">Textile</button>
+        <button class="filter-button" data-filter="design" role="tab">Design</button>
       </div>
       <div class="gallery-grid">
         <!-- Portfolio Items -->
-        <div class="portfolio-item" data-category="wall design">
-          <img src="assets/img/portfolio1.png" alt="Mural graffiti" />
+        <div class="portfolio-item" data-category="wall design" data-category-label="Perete / Design" data-title="Mural Graffiti" data-description="Proiect realizat cu execuție premium, atenție la detalii și integrare vizuală în spațiu.">
+          <img src="assets/img/portfolio1.png" alt="Mural graffiti"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Mural Graffiti</h4>
           </div>
         </div>
-        <div class="portfolio-item" data-category="wall">
-          <img src="assets/img/portfolio2.png" alt="Model geometric" />
+        <div class="portfolio-item" data-category="wall" data-category-label="Perete" data-title="Model Geometric" data-description="Compoziție geometrică clară, cu accent pe impact vizual și culori rezistente.">
+          <img src="assets/img/portfolio2.png" alt="Model geometric"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Model Geometric</h4>
           </div>
         </div>
-        <div class="portfolio-item" data-category="design objects">
-          <img src="assets/img/portfolio3.png" alt="Tipografie modernă" />
+        <div class="portfolio-item" data-category="design objects" data-category-label="Design / Obiecte" data-title="Tipografie Modernă" data-description="Direcție de design modernă pentru aplicații de branding și decor personalizat.">
+          <img src="assets/img/portfolio3.png" alt="Tipografie modernă"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Tipografie Modernă</h4>
           </div>
         </div>
-        <div class="portfolio-item" data-category="wall textile">
-          <img src="assets/img/portfolio4.png" alt="Colaj mural" />
+        <div class="portfolio-item" data-category="wall textile" data-category-label="Perete / Textile" data-title="Colaj Mural" data-description="Proiect mixt cu integrare creativă între print mural și elemente textile.">
+          <img src="assets/img/portfolio4.png" alt="Colaj mural"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Colaj Mural</h4>
           </div>
         </div>
-        <div class="portfolio-item" data-category="wall objects">
-          <img src="assets/img/portfolio5.png" alt="Colaj variații" />
+        <div class="portfolio-item" data-category="wall objects" data-category-label="Perete / Obiecte" data-title="Variații de design" data-description="Variații vizuale adaptate pentru suprafețe diferite și aplicații comerciale.">
+          <img src="assets/img/portfolio5.png" alt="Colaj variații"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Variații de design</h4>
           </div>
         </div>
         <!-- Duplicate some items to create varietate -->
-        <div class="portfolio-item" data-category="objects textile">
-          <img src="assets/img/portfolio3.png" alt="Tipografie modernă 2" />
+        <div class="portfolio-item" data-category="objects textile" data-category-label="Obiecte / Textile" data-title="Tipografie modernă" data-description="Execuție personalizată pe obiecte și textile cu consistență cromatică ridicată.">
+          <img src="assets/img/portfolio3.png" alt="Tipografie modernă 2"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Tipografie modernă</h4>
           </div>
         </div>
-        <div class="portfolio-item" data-category="wall">
-          <img src="assets/img/portfolio2.png" alt="Model geometric 2" />
+        <div class="portfolio-item" data-category="wall" data-category-label="Perete" data-title="Model geometric" data-description="Structură vizuală echilibrată pentru interioare contemporane.">
+          <img src="assets/img/portfolio2.png" alt="Model geometric 2"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Model geometric</h4>
           </div>
         </div>
-        <div class="portfolio-item" data-category="design">
-          <img src="assets/img/portfolio1.png" alt="Mural graffiti 2" />
+        <div class="portfolio-item" data-category="design" data-category-label="Design" data-title="Mural graffiti" data-description="Concept grafic expresiv pentru spații cu personalitate.">
+          <img src="assets/img/portfolio1.png" alt="Mural graffiti 2"  loading="lazy" width="800" height="600" decoding="async">
           <div class="portfolio-info">
             <h4>Mural graffiti</h4>
           </div>
         </div>
       </div>
       <!-- Lightbox -->
-      <div class="lightbox">
+      <div class="lightbox" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Detalii proiect">
         <span class="close">&times;</span>
-        <img src="" alt="Imagine portofoliu" />
+        <img src="" alt="Imagine portofoliu"  loading="lazy" width="800" height="600" decoding="async">
         <div class="lightbox-caption"></div>
       </div>
     </section>
@@ -130,12 +133,12 @@
         <!-- Slider 1 -->
         <div class="ba-slider" data-start="50">
           <div class="ba-before">
-            <img src="assets/img/before.png" alt="Înainte" />
+            <img src="assets/img/before.png" alt="Înainte"  loading="lazy" width="800" height="600" decoding="async">
             <div class="ba-before-text">Before</div>
           </div>
 
           <div class="ba-after">
-            <img src="assets/img/after.png" alt="După" />
+            <img src="assets/img/after.png" alt="După"  loading="lazy" width="800" height="600" decoding="async">
             <div class="ba-after-text">After</div>
           </div>
 
@@ -220,6 +223,7 @@
   </div>
 </section>
 
+    </main>
     <!-- Footer -->
     <footer>
       <div class="footer-grid">
